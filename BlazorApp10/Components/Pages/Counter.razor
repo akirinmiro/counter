@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@rendermode RenderMode.InteractiveServer
+
+
+@page "/counter"
+
+<MudTextField @bind-Value="@inputText" Label="Введите текст" />
+<MudButton Color="Color.Primary" OnClick="@AddToTable">Добавить в таблицу</MudButton>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Имя</th>
+            <th>Время</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in tableItems)
+        {
+            <tr>
+                <td>@item.Number</td>
+                <td>@item.Name</td>
+                <td>@item.Time</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private string inputText;
+    private List<TableItem> tableItems = new List<TableItem>();
+    private int counter = 1;
+
+    public class TableItem
+    {
+        public int Number { get; set; }
+        public string Name { get; set; }
+        public DateTime Time { get; set; }
+    }
+
+    private void AddToTable()
+    {
+        if (!string.IsNullOrEmpty(inputText))
+        {
+            tableItems.Add(new TableItem
+                {
+                    Number = counter,
+                    Name = inputText,
+                    Time = DateTime.Now
+
+                });
+
+            counter++;
+            inputText = "";
+            StateHasChanged();
+        }
+    }
+}
+}
